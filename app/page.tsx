@@ -1,3 +1,7 @@
 export default function Home() {
-  return <button className={"btn btn-primary btn-sm"}>Test Daisy</button>;
+  return (
+    <div>
+      <h1>Next.js + TypeScript + Tailwind CSS</h1>
+    </div>
+  );
 }

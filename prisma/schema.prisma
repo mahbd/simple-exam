@@ -7,22 +7,24 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = "file:./dev.sqlite3"
 }
 
 model Test {
   id        Int        @id @default(autoincrement())
   name      String
   questions Question[]
+  createdAt DateTime   @default(now())
 }
 
 model Question {
   id             Int      @id @default(autoincrement())
   question       String
-  correctAnswer  String
+  correctAnswer  Float
   test           Test?    @relation(fields: [testId], references: [id])
   testId         Int?
   examineeAnswer Answer[]
+  createdAt      DateTime @default(now())
 }
 
 model Examinee {
@@ -32,6 +34,7 @@ model Examinee {
   classNo   Int
   school    String
   answers   Answer[]
+  createdAt DateTime @default(now())
 }
 
 model Answer {
@@ -41,4 +44,5 @@ model Answer {
   questionId Int
   examinee   Examinee @relation(fields: [examineeId], references: [id])
   examineeId Int
+  createdAt  DateTime @default(now())
 }
