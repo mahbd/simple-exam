@@ -15,12 +15,14 @@ model Test {
   name      String
   questions Question[]
   createdAt DateTime   @default(now())
+  examinees Examinee[]
 }
 
 model Question {
   id             Int      @id @default(autoincrement())
+  answerType     String   @default("number") // number, float, text
   question       String
-  correctAnswer  Float
+  correctAnswer  String
   test           Test?    @relation(fields: [testId], references: [id])
   testId         Int?
   examineeAnswer Answer[]
@@ -34,6 +36,8 @@ model Examinee {
   classNo   Int
   school    String
   answers   Answer[]
+  testId    Int
+  test      Test     @relation(fields: [testId], references: [id])
   createdAt DateTime @default(now())
 }
 
@@ -44,5 +48,6 @@ model Answer {
   questionId Int
   examinee   Examinee @relation(fields: [examineeId], references: [id])
   examineeId Int
+  isCorrect  Boolean  @default(false)
   createdAt  DateTime @default(now())
 }
