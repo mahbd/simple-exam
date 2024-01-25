@@ -20,16 +20,10 @@ const filterQueries = {
   },
 };
 
-interface QuestionProps {
-  searchParams: {
-    test?: string;
-  };
-}
-
-const Questions = async ({ searchParams }: AdminProps & QuestionProps) => {
+const Tests = async ({ searchParams }: AdminProps) => {
   const limit = Number(searchParams.limit) || 10;
   const offset = Number(searchParams.offset) || 0;
-  const searchFields = ["question"];
+  const searchFields = ["name"];
   const searchQuery = searchFields.map((field) =>
     generateQueryRecursive(field, searchParams.search || ""),
   );
@@ -39,60 +33,59 @@ const Questions = async ({ searchParams }: AdminProps & QuestionProps) => {
       (searchParams.filter || "all") as keyof typeof filterQueries
     ] || {};
 
-  const testFilter = searchParams.test
-    ? { testId: parseInt(searchParams.test) }
-    : {};
-
   const fullQuery = {
     where: {
       OR: searchQuery,
       ...filterQuery,
-      ...testFilter,
     },
     skip: offset,
     take: limit,
   };
 
-  const questions = await prisma.question.findMany(fullQuery);
-  const itemCount = await prisma.question.count({ where: fullQuery.where });
+  const tests = await prisma.test.findMany(fullQuery);
+  const itemCount = await prisma.test.count({ where: fullQuery.where });
   return (
     <div>
-      <h1>Questions</h1>
+      <h1>Tests</h1>
       <div className="md:flex gap-3">
         <div className="my-3">
           <SearchBar
             search={searchParams.search}
-            placeholder="Search by question"
+            placeholder="Search by test name"
           />
         </div>
         <div className="my-3">
           <FilterBar filter={searchParams.filter} options={filterOptions} />
         </div>
-        <Link href={`/admin/questions/new`}>
-          <button className="btn btn-sm btn-primary">Create Question</button>
+        <Link href={`/admin/tests/new`}>
+          <button className="btn btn-sm btn-primary">New Test</button>
         </Link>
       </div>
       <table>
         <thead>
           <tr>
             <th>ID</th>
-            <th>Question</th>
-            <th>Correct Answer</th>
+            <th>Name</th>
+            <th>Questions</th>
           </tr>
         </thead>
         <tbody>
-          {questions.map((question) => (
-            <tr key={question.id}>
+          {tests.map((test) => (
+            <tr key={test.id}>
               <td>
-                <Link
-                  href={`/admin/questions/${question.id}`}
-                  className={"link"}
-                >
-                  {question.id}
+                <Link href={`/admin/tests/${test.id}`} className={"link"}>
+                  {test.id}
                 </Link>
               </td>
-              <td>{question.question}</td>
-              <td>{question.correctAnswer}</td>
+              <td>{test.name}</td>
+              <td>
+                <Link
+                  href={`/admin/questions/?test=${test.id}`}
+                  className={"link link-primary"}
+                >
+                  Questions
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -102,9 +95,9 @@ const Questions = async ({ searchParams }: AdminProps & QuestionProps) => {
   );
 };
 
-export default Questions;
+export default Tests;
 
 export const metadata = {
-  title: "Questions Admin",
-  description: "Questions",
+  title: "Tests Admin",
+  description: "Tests",
 };

@@ -74,11 +74,11 @@ const QuestionForm = ({ question, tests }: Props) => {
             <span className="label-text">Correct Answer</span>
           </label>
           <input
-            type="number"
+            type="text"
             className={`input input-sm input-bordered ${
               errors.correctAnswer ? "input-error" : ""
             }`}
-            {...register("correctAnswer", { valueAsNumber: true })}
+            {...register("correctAnswer")}
           />
           <ErrorMessage>{errors.correctAnswer?.message}</ErrorMessage>
         </div>
