@@ -47,7 +47,7 @@ const ExamineeForm = ({ tests }: { tests: Test[] }) => {
     setValue("name", st.getItem("name") || "");
     setValue("classNo", parseInt(st.getItem("classNo") || "0"));
     setValue("school", st.getItem("school") || "");
-  }, []);
+  }, [setValue]);
 
   return (
     <div>
