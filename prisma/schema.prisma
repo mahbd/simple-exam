@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -23,8 +20,8 @@ model Question {
   answerType     String   @default("number") // number, float, text
   question       String
   correctAnswer  String
-  test           Test?    @relation(fields: [testId], references: [id])
-  testId         Int?
+  test           Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testId         Int
   examineeAnswer Answer[]
   createdAt      DateTime @default(now())
 }
@@ -37,16 +34,16 @@ model Examinee {
   school    String
   answers   Answer[]
   testId    Int
-  test      Test     @relation(fields: [testId], references: [id])
+  test      Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
 
 model Answer {
   id         Int      @id @default(autoincrement())
   answer     String
-  question   Question @relation(fields: [questionId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
-  examinee   Examinee @relation(fields: [examineeId], references: [id])
+  examinee   Examinee @relation(fields: [examineeId], references: [id], onDelete: Cascade)
   examineeId Int
   isCorrect  Boolean  @default(false)
   createdAt  DateTime @default(now())

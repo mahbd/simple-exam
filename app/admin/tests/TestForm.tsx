@@ -9,7 +9,6 @@ import Spinner from "@/components/Spinner";
 import { Test } from "@prisma/client";
 import { testSchema } from "@/app/admin/tests/index";
 import { createTest, updateTest } from "@/app/admin/tests/actions";
-import { useRouter } from "next/navigation";
 
 type TestFormData = z.infer<typeof testSchema>;
 
@@ -18,7 +17,6 @@ interface Props {
 }
 
 const TestForm = ({ test }: Props) => {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
