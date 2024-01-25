@@ -63,7 +63,7 @@ const QuestionForm = ({ question, tests }: Props) => {
           <input
             type="text"
             className={`input input-sm input-bordered ${
-              errors.correctAnswer ? "input-error" : ""
+              errors.question ? "input-error" : ""
             }`}
             {...register("question")}
           />
