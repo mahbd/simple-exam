@@ -24,7 +24,7 @@ export const submitAnswer = async (
   if (!question) {
     notFound();
   }
-  await prisma.answer.create({
+  const res = await prisma.answer.create({
     data: {
       examineeId: examineeId,
       questionId: questionId,
@@ -32,5 +32,5 @@ export const submitAnswer = async (
       isCorrect: question.correctAnswer === answer,
     },
   });
-  return true;
+  return { ok: true, isCorrect: res.isCorrect };
 };

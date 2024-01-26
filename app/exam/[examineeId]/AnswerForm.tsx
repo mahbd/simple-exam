@@ -1,7 +1,6 @@
 "use client";
 
 import { submitAnswer } from "@/app/exam/actions";
-import { useRouter } from "next/navigation";
 
 interface Props {
   examineeId: number;
@@ -9,15 +8,26 @@ interface Props {
 }
 
 const AnswerForm = ({ examineeId, questionId }: Props) => {
-  const router = useRouter();
   const onSubmit = async () => {
+    document.getElementById("input-form")?.classList.add("hidden");
     const answer = (document.getElementById("answer-field") as HTMLInputElement)
       .value;
-    await submitAnswer(examineeId, questionId, answer);
-    router.refresh();
+    const res = await submitAnswer(examineeId, questionId, answer);
+    const clapping = document.getElementById("clapping") as HTMLAudioElement;
+    const failed = document.getElementById("failed-sound") as HTMLAudioElement;
+    if (res.isCorrect) {
+      await clapping.play();
+    } else {
+      await failed.play();
+    }
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+    window.location.reload();
   };
+
   return (
-    <div className={"mt-20"}>
+    <div className={"mt-20"} id={"input-form"}>
+      <audio id={"clapping"} className={"hidden"} src="/clapping.m4a"></audio>
+      <audio id={"failed-sound"} className={"hidden"} src="/failed.m4a"></audio>
       <input
         id={"answer-field"}
         type="text"
