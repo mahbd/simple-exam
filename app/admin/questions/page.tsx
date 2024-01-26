@@ -78,6 +78,7 @@ const Questions = async ({ searchParams }: AdminProps & QuestionProps) => {
             <th>ID</th>
             <th>Question</th>
             <th>Correct Answer</th>
+            <th>Answer Type</th>
           </tr>
         </thead>
         <tbody>
@@ -93,6 +94,7 @@ const Questions = async ({ searchParams }: AdminProps & QuestionProps) => {
               </td>
               <td>{question.question}</td>
               <td>{question.correctAnswer}</td>
+              <td>{question.answerType}</td>
             </tr>
           ))}
         </tbody>

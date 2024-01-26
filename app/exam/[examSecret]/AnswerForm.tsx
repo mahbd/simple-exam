@@ -5,9 +5,10 @@ import { submitAnswer } from "@/app/exam/actions";
 interface Props {
   examSecret: string;
   questionId: number;
+  answerType: "text" | "number" | "float";
 }
 
-const AnswerForm = ({ examSecret, questionId }: Props) => {
+const AnswerForm = ({ examSecret, questionId, answerType }: Props) => {
   const onSubmit = async () => {
     document.getElementById("input-form")?.classList.add("hidden");
     const answer = (document.getElementById("answer-field") as HTMLInputElement)
@@ -30,7 +31,7 @@ const AnswerForm = ({ examSecret, questionId }: Props) => {
       <audio id={"failed-sound"} className={"hidden"} src="/failed.m4a"></audio>
       <input
         id={"answer-field"}
-        type="text"
+        type={answerType === "text" ? "text" : "number"}
         className={"ms-[8vw] mt-1 input rounded-s-2xl rounded-e-none"}
       />
       <button

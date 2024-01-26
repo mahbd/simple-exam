@@ -93,7 +93,11 @@ const ExamPage = async ({ params: { examSecret } }: Props) => {
             {nextQuestion?.question}
           </div>
         </div>
-        <AnswerForm examSecret={examSecret} questionId={nextQuestion.id} />
+        <AnswerForm
+          examSecret={examSecret}
+          questionId={nextQuestion.id}
+          answerType={nextQuestion.answerType as "text" | "number" | "float"}
+        />
       </div>
     </div>
   );

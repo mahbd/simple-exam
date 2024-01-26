@@ -27,6 +27,10 @@ const QuestionForm = ({ question, tests }: Props) => {
     defaultValues: {
       question: question?.question || "",
       correctAnswer: question?.correctAnswer || undefined,
+      answerType: (question?.answerType || "text") as
+        | "text"
+        | "number"
+        | "float",
       testId: question?.testId || 0,
     },
   });
@@ -68,6 +72,22 @@ const QuestionForm = ({ question, tests }: Props) => {
             {...register("question")}
           />
           <ErrorMessage>{errors.question?.message}</ErrorMessage>
+        </div>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Answer Type</span>
+          </label>
+          <select
+            className={`select select-sm select-bordered ${
+              errors.answerType ? "select-error" : ""
+            }`}
+            {...register("answerType")}
+          >
+            <option value="text">Text</option>
+            <option value="number">Numeric</option>
+            <option value="float">Decimal</option>
+          </select>
+          <ErrorMessage>{errors.answerType?.message}</ErrorMessage>
         </div>
         <div className="form-control">
           <label className="label">
