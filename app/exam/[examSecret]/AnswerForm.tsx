@@ -3,16 +3,16 @@
 import { submitAnswer } from "@/app/exam/actions";
 
 interface Props {
-  examineeId: number;
+  examSecret: string;
   questionId: number;
 }
 
-const AnswerForm = ({ examineeId, questionId }: Props) => {
+const AnswerForm = ({ examSecret, questionId }: Props) => {
   const onSubmit = async () => {
     document.getElementById("input-form")?.classList.add("hidden");
     const answer = (document.getElementById("answer-field") as HTMLInputElement)
       .value;
-    const res = await submitAnswer(examineeId, questionId, answer);
+    const res = await submitAnswer(examSecret, questionId, answer);
     const clapping = document.getElementById("clapping") as HTMLAudioElement;
     const failed = document.getElementById("failed-sound") as HTMLAudioElement;
     if (res.isCorrect) {

@@ -3,14 +3,14 @@ import { notFound } from "next/navigation";
 
 interface Props {
   params: {
-    examineeId: string;
+    examSecret: string;
   };
 }
 
-const Result = async ({ params: { examineeId } }: Props) => {
+const Result = async ({ params: { examSecret } }: Props) => {
   const examinee = await prisma.examinee.findUnique({
     where: {
-      id: parseInt(examineeId),
+      secret: examSecret,
     },
     include: {
       answers: {

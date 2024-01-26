@@ -2,19 +2,19 @@ import prisma from "@/prisma/client";
 import React from "react";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
-import AnswerForm from "@/app/exam/[examineeId]/AnswerForm";
-import InfoBoard from "@/app/exam/[examineeId]/InfoBoard";
+import AnswerForm from "@/app/exam/[examSecret]/AnswerForm";
+import InfoBoard from "@/app/exam/[examSecret]/InfoBoard";
 
 interface Props {
   params: {
-    examineeId: string;
+    examSecret: string;
   };
 }
 
-const ExamPage = async ({ params: { examineeId } }: Props) => {
+const ExamPage = async ({ params: { examSecret } }: Props) => {
   const examinee = await prisma.examinee.findUnique({
     where: {
-      id: parseInt(examineeId),
+      secret: examSecret,
     },
   });
   if (!examinee) {
@@ -22,14 +22,14 @@ const ExamPage = async ({ params: { examineeId } }: Props) => {
   }
   const correctAnswer = await prisma.answer.count({
     where: {
-      examineeId: parseInt(examineeId),
+      examineeId: examinee.id,
       isCorrect: true,
     },
   });
 
   const wrongAnswer = await prisma.answer.count({
     where: {
-      examineeId: parseInt(examineeId),
+      examineeId: examinee.id,
       isCorrect: false,
     },
   });
@@ -40,14 +40,14 @@ const ExamPage = async ({ params: { examineeId } }: Props) => {
       NOT: {
         examineeAnswer: {
           some: {
-            examineeId: parseInt(examineeId),
+            examineeId: examinee.id,
           },
         },
       },
     },
   });
   if (!nextQuestion) {
-    redirect(`/exam/${examineeId}/result`);
+    redirect(`/exam/${examSecret}/result`);
   }
 
   const questionLeft = await prisma.question.count({
@@ -56,7 +56,7 @@ const ExamPage = async ({ params: { examineeId } }: Props) => {
       NOT: {
         examineeAnswer: {
           some: {
-            examineeId: parseInt(examineeId),
+            examineeId: examinee.id,
           },
         },
       },
@@ -93,10 +93,7 @@ const ExamPage = async ({ params: { examineeId } }: Props) => {
             {nextQuestion?.question}
           </div>
         </div>
-        <AnswerForm
-          examineeId={parseInt(examineeId)}
-          questionId={nextQuestion.id}
-        />
+        <AnswerForm examSecret={examSecret} questionId={nextQuestion.id} />
       </div>
     </div>
   );

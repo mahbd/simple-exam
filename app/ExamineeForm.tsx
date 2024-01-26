@@ -37,7 +37,7 @@ const ExamineeForm = ({ tests }: { tests: Test[] }) => {
     let res = await createExaminee(JSON.stringify(data));
     setIsSubmitting(false);
     if (res.examinee) {
-      router.replace(`/exam/${res.examinee.id}`);
+      router.replace(`/exam/${res.examinee.secret}`);
     }
   };
 

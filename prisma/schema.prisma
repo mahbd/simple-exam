@@ -34,6 +34,7 @@ model Examinee {
   school    String
   answers   Answer[]
   testId    Int
+  secret String @unique
   test      Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }

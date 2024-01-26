@@ -4,13 +4,13 @@ import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 
 export const submitAnswer = async (
-  examineeId: number,
+  examSecret: string,
   questionId: number,
   answer: string,
 ) => {
   const examinee = await prisma.examinee.findUnique({
     where: {
-      id: examineeId,
+      secret: examSecret,
     },
   });
   if (!examinee) {
@@ -26,7 +26,7 @@ export const submitAnswer = async (
   }
   const res = await prisma.answer.create({
     data: {
-      examineeId: examineeId,
+      examineeId: examinee.id,
       questionId: questionId,
       answer: answer,
       isCorrect: question.correctAnswer === answer,

@@ -11,6 +11,7 @@ export const createExaminee = async (dataStr: string) => {
   const examinee = await prisma.examinee.create({
     data: {
       ...data.data,
+      secret: Math.random().toString(36).substring(2, 15),
     },
   });
   return { ok: true, examinee: examinee };

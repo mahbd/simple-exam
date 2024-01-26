@@ -91,7 +91,7 @@ const Questions = async ({ searchParams }: AdminProps & ExamineeProps) => {
               <td>{examinee.test.name}</td>
               <td>
                 <Link
-                  href={`/exam/${examinee.id}/result`}
+                  href={`/exam/${examinee.secret}/result`}
                   className={"link link-primary"}
                 >
                   Result

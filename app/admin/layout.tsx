@@ -29,6 +29,8 @@ const AdminLayout = async ({
   }
   // @ts-ignore
   if (session.user.role !== "ADMIN") {
+    console.log(session.user);
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     return redirect("/denied");
   }
   return (
