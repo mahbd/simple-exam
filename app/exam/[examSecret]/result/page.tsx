@@ -23,8 +23,40 @@ const Result = async ({ params: { examSecret } }: Props) => {
   });
   if (!examinee) notFound();
 
+  const correctAnswer = await prisma.answer.count({
+    where: {
+      examineeId: examinee.id,
+      isCorrect: true,
+    },
+  });
+
+  const wrongAnswer = await prisma.answer.count({
+    where: {
+      examineeId: examinee.id,
+      isCorrect: false,
+    },
+  });
+
+  const lastAnswer = await prisma.answer.findFirst({
+    where: {
+      examineeId: examinee.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  if (!lastAnswer) notFound();
+
+  let seconds = Math.floor(
+    (lastAnswer.createdAt.getTime() - examinee.createdAt.getTime()) / 1000,
+  );
+  const minutes = Math.floor(seconds / 60);
+  seconds = seconds % 60;
+
   return (
     <div>
+      <h2 className={"text-xl font-bold"}>Student Information</h2>
       <table>
         <tbody>
           <tr>
@@ -49,6 +81,7 @@ const Result = async ({ params: { examSecret } }: Props) => {
           </tr>
         </tbody>
       </table>
+      <h2 className={"mt-5 text-xl font-bold"}>Exam Result</h2>
       <table>
         <thead>
           <tr>
@@ -71,8 +104,12 @@ const Result = async ({ params: { examSecret } }: Props) => {
           ))}
         </tbody>
       </table>
+      <h2 className={"mt-5 font-bold"}>Correct Answer: {correctAnswer}</h2>
+      <h2 className={"font-bold"}>Wrong Answer: {wrongAnswer}</h2>
+      <h2 className={"font-bold"}>
+        Time Taken: {minutes} minutes {seconds} seconds
+      </h2>
     </div>
   );
 };
-
 export default Result;
