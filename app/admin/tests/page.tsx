@@ -67,6 +67,7 @@ const Tests = async ({ searchParams }: AdminProps) => {
             <th>ID</th>
             <th>Name</th>
             <th>Questions</th>
+            <th>Examinee</th>
           </tr>
         </thead>
         <tbody>
@@ -80,10 +81,18 @@ const Tests = async ({ searchParams }: AdminProps) => {
               <td>{test.name}</td>
               <td>
                 <Link
-                  href={`/admin/questions/?test=${test.id}`}
+                  href={`/admin/questions/?filter=test${test.id}`}
                   className={"link link-primary"}
                 >
                   Questions
+                </Link>
+              </td>
+              <td>
+                <Link
+                  href={`/admin/examinees/?filter=test${test.id}`}
+                  className={"link link-primary"}
+                >
+                  Examinees
                 </Link>
               </td>
             </tr>

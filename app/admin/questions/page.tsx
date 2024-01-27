@@ -5,28 +5,7 @@ import Pagination from "@/components/Pagination";
 import { AdminProps, generateQueryRecursive } from "@/app/admin";
 import Link from "next/link";
 
-const filterOptions = [
-  { value: "all", label: "All" },
-  { value: "today", label: "Today" },
-];
-
-const filterQueries = {
-  all: {},
-  today: {
-    createdAt: {
-      gte: new Date(new Date().setHours(0, 0, 0, 0)),
-      lte: new Date(new Date().setHours(23, 59, 59, 999)),
-    },
-  },
-};
-
-interface QuestionProps {
-  searchParams: {
-    test?: string;
-  };
-}
-
-const Questions = async ({ searchParams }: AdminProps & QuestionProps) => {
+const Questions = async ({ searchParams }: AdminProps) => {
   const limit = Number(searchParams.limit) || 10;
   const offset = Number(searchParams.offset) || 0;
   const searchFields = ["question"];
@@ -34,20 +13,44 @@ const Questions = async ({ searchParams }: AdminProps & QuestionProps) => {
     generateQueryRecursive(field, searchParams.search || ""),
   );
 
+  const filterOptions = [
+    { value: "all", label: "All" },
+    { value: "today", label: "Today" },
+  ];
+
+  const filterQueries: { [key: string]: any } = {
+    all: {},
+    today: {
+      createdAt: {
+        gte: new Date(new Date().setHours(0, 0, 0, 0)),
+        lte: new Date(new Date().setHours(23, 59, 59, 999)),
+      },
+    },
+  };
+  const tests = await prisma.test.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  for (const test of tests) {
+    filterOptions.push({
+      value: `test${test.id}`,
+      label: test.name,
+    });
+    filterQueries[`test${test.id}`] = { testId: test.id };
+  }
+
   const filterQuery =
     filterQueries[
       (searchParams.filter || "all") as keyof typeof filterQueries
     ] || {};
 
-  const testFilter = searchParams.test
-    ? { testId: parseInt(searchParams.test) }
-    : {};
-
   const fullQuery = {
     where: {
       OR: searchQuery,
       ...filterQuery,
-      ...testFilter,
     },
     skip: offset,
     take: limit,
@@ -69,7 +72,7 @@ const Questions = async ({ searchParams }: AdminProps & QuestionProps) => {
           <FilterBar filter={searchParams.filter} options={filterOptions} />
         </div>
         <Link href={`/admin/questions/new`}>
-          <button className="btn btn-sm btn-primary">Create Question</button>
+          <button className="btn btn-sm btn-primary">New Question</button>
         </Link>
       </div>
       <table>

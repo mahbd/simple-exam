@@ -21,7 +21,7 @@ const AnswerForm = ({ examSecret, questionId, answerType }: Props) => {
     } else {
       await failed.play();
     }
-    await new Promise((resolve) => setTimeout(resolve, 4000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     window.location.reload();
   };
 
