@@ -13,6 +13,9 @@ interface Props {
 const UpdateTest = async ({ params: { id } }: Props) => {
   const test = await prisma.test.findUnique({
     where: { id: parseInt(id) },
+    include: {
+      questions: true,
+    },
   });
   if (!test) {
     notFound();
