@@ -52,7 +52,7 @@ const ExamineeForm = ({ tests }: { tests: Test[] }) => {
   return (
     <div>
       <form
-        className="px-2 my-10 py-5 rounded-2xl flex flex-col gap-2 border-2 w-[500px]"
+        className="px-2 my-10 py-5 rounded-2xl flex flex-col gap-2 border-2 w-[350px] md:w-[500px]"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className={"font-bold text-center text-2xl"}>Examinee Form</h1>

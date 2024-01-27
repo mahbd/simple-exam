@@ -35,7 +35,7 @@ const InfoBoard = ({
   return (
     <div
       className={
-        "bg-info bg-transparent/30 rounded-3xl p-5 pb-7 w-[30rem] ms-[8vw] grid grid-cols-2 gap-1"
+        "bg-info bg-transparent/30 rounded-3xl p-5 pb-7 w-[15rem] md:w-[30rem] grid grid-cols-1 md:grid-cols-2 gap-1"
       }
     >
       <p

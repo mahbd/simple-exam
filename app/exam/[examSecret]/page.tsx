@@ -79,17 +79,16 @@ const ExamPage = async ({ params: { examSecret } }: Props) => {
         }}
       />
       <div>
-        <InfoBoard
-          correctAnswer={correctAnswer}
-          wrongAnswer={wrongAnswer}
-          startTime={examinee.createdAt}
-          questionLeft={questionLeft}
-        />
-        <div
-          className="mt-5 chat chat-end text-6xl text-start"
-          style={{ marginRight: "30vw" }}
-        >
-          <div className="chat-bubble bg-transparent">
+        <div className={"flex justify-center"}>
+          <InfoBoard
+            correctAnswer={correctAnswer}
+            wrongAnswer={wrongAnswer}
+            startTime={examinee.createdAt}
+            questionLeft={questionLeft}
+          />
+        </div>
+        <div className="mt-5 chat chat-start text-6xl text-start ms-2 md:ms-[5vw]">
+          <div className="chat-bubble chat-bubble-accent p-5">
             {nextQuestion?.question}
           </div>
         </div>

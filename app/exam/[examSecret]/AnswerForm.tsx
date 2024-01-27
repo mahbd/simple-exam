@@ -26,7 +26,7 @@ const AnswerForm = ({ examSecret, questionId, answerType }: Props) => {
   };
 
   return (
-    <div className={"mt-20"} id={"input-form"}>
+    <div className={"mt-10"} id={"input-form"}>
       <audio id={"clapping"} className={"hidden"} src="/clapping.m4a"></audio>
       <audio id={"failed-sound"} className={"hidden"} src="/failed.m4a"></audio>
       <input
