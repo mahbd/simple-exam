@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { isAdminUserPass } from "@/app/admin/index";
 
 const adminNavItems = [
   {
@@ -23,16 +23,12 @@ const AdminLayout = async ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const session = await getServerSession(authOptions);
-  if (!session || !session.user) {
-    return redirect("/api/auth/signin?callbackUrl=/admin");
+  const username = cookies().get("username");
+  const password = cookies().get("password");
+  if (!isAdminUserPass(username?.value, password?.value)) {
+    return redirect("/login/?callbackUrl=/admin");
   }
-  // @ts-ignore
-  if (session.user.role !== "ADMIN") {
-    console.log(session.user);
-    await new Promise((resolve) => setTimeout(resolve, 10000));
-    return redirect("/denied");
-  }
+
   return (
     <div>
       {adminNavItems.map((navItem) => (

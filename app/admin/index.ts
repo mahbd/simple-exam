@@ -22,3 +22,12 @@ export interface AdminProps {
     filter?: string;
   };
 }
+
+export const isAdminUserPass = (
+  username: string | undefined,
+  password: string | undefined,
+): boolean => {
+  const au = process.env.ADMIN_USERNAME;
+  const ap = process.env.ADMIN_PASSWORD;
+  return username === au && password === ap;
+};
