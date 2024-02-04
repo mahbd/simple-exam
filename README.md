@@ -7,6 +7,7 @@
 2. Clone this repository
    ```
     git clone https://github.com/mahbd/simple-exam.git
+   cd simple-exam
    ```
 3. Run the following commands to finish setting up the project:
    ```bash
